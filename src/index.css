@@ -1,0 +1,348 @@
+@import 'tailwindcss';
+
+/* Layout: uma coluna de app (até 460px) no centro; no computador, o painel
+   "Define → Develop" fica à esquerda para a apresentação. */
+:root {
+  --bg: #f1f2f8;
+  --bg-fora: #e3e5ef;
+  --surface: #ffffff;
+  --surface-2: #e9ebf4;
+  --fg: #121529;
+  --muted: #585e80;
+  --line: #d7daea;
+  --accent: #2a45e8;
+  --accent-fg: #ffffff;
+  --accent-soft: #e2e6ff;
+  --sun: #ffc83a;
+  --sun-fg: #2b2100;
+  --sun-soft: #fff3cf;
+  --ok: #17845a;
+  --ok-soft: #dcf2e7;
+  --warn: #9a5900;
+  --warn-soft: #fff0d4;
+  --bad: #c3343b;
+  --bad-soft: #fbe2e3;
+  --scrim: rgb(10 12 28 / 0.45);
+  --sombra: 0 1px 2px rgb(18 21 41 / 0.06), 0 10px 30px rgb(18 21 41 / 0.09);
+  /* Cores fixas dos vídeos curtos: iguais nos dois temas, com texto próprio. */
+  --reel-cobalto: #2a45e8;
+  --reel-sol: #ffc83a;
+  --reel-coral: #ff6a4d;
+  --reel-menta: #2fbf98;
+  --reel-tinta: #191c33;
+  --reel-lilas: #8c7bff;
+  --reel-claro: #ffffff;
+  --reel-escuro: #121529;
+}
+
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme='light']) {
+    --bg: #0e1121;
+    --bg-fora: #070914;
+    --surface: #171b31;
+    --surface-2: #20253f;
+    --fg: #eceefb;
+    --muted: #9ba1c4;
+    --line: #2b3154;
+    --accent: #8293ff;
+    --accent-fg: #0b0e1e;
+    --accent-soft: #252c5c;
+    --sun: #ffd35c;
+    --sun-fg: #2b2100;
+    --sun-soft: #3a3016;
+    --ok: #52cf95;
+    --ok-soft: #173a2b;
+    --warn: #f3b552;
+    --warn-soft: #3b2c12;
+    --bad: #f38389;
+    --bad-soft: #3f1d22;
+    --scrim: rgb(0 0 0 / 0.6);
+    --sombra: 0 1px 2px rgb(0 0 0 / 0.4), 0 10px 30px rgb(0 0 0 / 0.35);
+    color-scheme: dark;
+  }
+}
+
+:root[data-theme='dark'] {
+  --bg: #0e1121;
+  --bg-fora: #070914;
+  --surface: #171b31;
+  --surface-2: #20253f;
+  --fg: #eceefb;
+  --muted: #9ba1c4;
+  --line: #2b3154;
+  --accent: #8293ff;
+  --accent-fg: #0b0e1e;
+  --accent-soft: #252c5c;
+  --sun: #ffd35c;
+  --sun-fg: #2b2100;
+  --sun-soft: #3a3016;
+  --ok: #52cf95;
+  --ok-soft: #173a2b;
+  --warn: #f3b552;
+  --warn-soft: #3b2c12;
+  --bad: #f38389;
+  --bad-soft: #3f1d22;
+  --scrim: rgb(0 0 0 / 0.6);
+  --sombra: 0 1px 2px rgb(0 0 0 / 0.4), 0 10px 30px rgb(0 0 0 / 0.35);
+  color-scheme: dark;
+}
+
+@theme inline {
+  --color-bg: var(--bg);
+  --color-bg-fora: var(--bg-fora);
+  --color-surface: var(--surface);
+  --color-surface-2: var(--surface-2);
+  --color-fg: var(--fg);
+  --color-muted: var(--muted);
+  --color-line: var(--line);
+  --color-accent: var(--accent);
+  --color-accent-fg: var(--accent-fg);
+  --color-accent-soft: var(--accent-soft);
+  --color-sun: var(--sun);
+  --color-sun-fg: var(--sun-fg);
+  --color-sun-soft: var(--sun-soft);
+  --color-ok: var(--ok);
+  --color-ok-soft: var(--ok-soft);
+  --color-warn: var(--warn);
+  --color-warn-soft: var(--warn-soft);
+  --color-bad: var(--bad);
+  --color-bad-soft: var(--bad-soft);
+  --font-display: 'Bricolage Grotesque', 'Segoe UI', system-ui, sans-serif;
+  --font-sans: 'Onest', 'Segoe UI', system-ui, -apple-system, Roboto, sans-serif;
+  --font-mono: 'IBM Plex Mono', ui-monospace, 'Cascadia Mono', Consolas, monospace;
+}
+
+html,
+body,
+#root {
+  height: 100%;
+}
+
+html {
+  -webkit-text-size-adjust: 100%;
+}
+
+body {
+  margin: 0;
+  background: var(--bg-fora);
+  color: var(--fg);
+  font-family: var(--font-sans);
+  font-size: 15px;
+  line-height: 1.5;
+  -webkit-tap-highlight-color: transparent;
+}
+
+/* Em camadas, para as classes utilitárias (ex.: w-8, text-bad) poderem ajustar estes padrões. */
+@layer base {
+  h1,
+  h2,
+  h3 {
+    text-wrap: balance;
+  }
+
+  :focus-visible {
+    outline: 2px solid var(--accent);
+    outline-offset: 2px;
+  }
+}
+
+@layer components {
+.gutter {
+  padding-left: max(16px, env(safe-area-inset-left, 0px));
+  padding-right: max(16px, env(safe-area-inset-right, 0px));
+}
+
+.num {
+  font-variant-numeric: tabular-nums;
+}
+
+/* Botões */
+.btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  min-height: 44px;
+  padding: 0 18px;
+  border-radius: 999px;
+  font-weight: 600;
+  font-size: 15px;
+  border: 1px solid transparent;
+  cursor: pointer;
+  transition:
+    transform 0.12s ease,
+    background-color 0.15s ease,
+    opacity 0.15s ease;
+  white-space: nowrap;
+}
+.btn:active:not(:disabled) {
+  transform: scale(0.98);
+}
+.btn:disabled {
+  opacity: 0.5;
+  cursor: default;
+}
+.btn-sm {
+  min-height: 36px;
+  padding: 0 14px;
+  font-size: 14px;
+}
+.btn-primario {
+  background: var(--accent);
+  color: var(--accent-fg);
+}
+.btn-sol {
+  background: var(--sun);
+  color: var(--sun-fg);
+}
+.btn-suave {
+  background: var(--surface-2);
+  color: var(--fg);
+}
+.btn-linha {
+  background: transparent;
+  color: var(--fg);
+  border-color: var(--line);
+}
+.btn-icone {
+  display: inline-grid;
+  place-items: center;
+  width: 40px;
+  height: 40px;
+  border-radius: 999px;
+  cursor: pointer;
+  flex: none;
+  transition: background-color 0.15s ease;
+}
+
+.cartao {
+  background: var(--surface);
+  border: 1px solid var(--line);
+  border-radius: 20px;
+}
+
+.rotulo {
+  font-family: var(--font-mono);
+  font-size: 11px;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--muted);
+}
+
+/* Palavras tocáveis */
+.palavra {
+  display: inline;
+  padding: 0;
+  margin: 0;
+  border: 0;
+  background: none;
+  color: inherit;
+  font: inherit;
+  cursor: pointer;
+  border-radius: 4px;
+  transition: background-color 0.15s ease;
+}
+.palavra:hover {
+  background: color-mix(in srgb, var(--accent) 14%, transparent);
+}
+.palavra-glossario {
+  text-decoration: underline dotted;
+  text-decoration-thickness: 2px;
+  text-underline-offset: 4px;
+  text-decoration-color: color-mix(in srgb, currentColor 45%, transparent);
+}
+.palavra-falando {
+  background: var(--sun);
+  color: var(--sun-fg);
+}
+.reel-fundo-claro .palavra-falando {
+  background: var(--reel-escuro);
+  color: var(--reel-claro);
+}
+.frase-falando {
+  background: color-mix(in srgb, var(--sun) 35%, transparent);
+  border-radius: 4px;
+}
+
+/* Rolagem horizontal sem barra */
+.trilho {
+  display: flex;
+  gap: 12px;
+  overflow-x: auto;
+  scroll-snap-type: x mandatory;
+  scrollbar-width: none;
+}
+.trilho::-webkit-scrollbar {
+  display: none;
+}
+.trilho > * {
+  scroll-snap-align: start;
+  flex: none;
+}
+}
+
+@keyframes subir {
+  from {
+    transform: translateY(16px);
+    opacity: 0.4;
+  }
+  to {
+    transform: none;
+    opacity: 1;
+  }
+}
+.anima-subir {
+  animation: subir 0.22s ease-out;
+}
+
+@keyframes pulso {
+  0%,
+  100% {
+    transform: scale(1);
+    opacity: 0.6;
+  }
+  50% {
+    transform: scale(1.35);
+    opacity: 0;
+  }
+}
+.pulso::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  background: inherit;
+  animation: pulso 1.4s ease-in-out infinite;
+  z-index: -1;
+}
+
+@keyframes pontos {
+  0%,
+  80%,
+  100% {
+    opacity: 0.25;
+  }
+  40% {
+    opacity: 1;
+  }
+}
+.digitando span {
+  animation: pontos 1.2s infinite;
+}
+.digitando span:nth-child(2) {
+  animation-delay: 0.15s;
+}
+.digitando span:nth-child(3) {
+  animation-delay: 0.3s;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}
