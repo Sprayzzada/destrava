@@ -101,7 +101,7 @@ function ParaVoce() {
                   className="w-[150px] aspect-[9/14] max-w-full rounded-[22px] p-3 flex flex-col text-left relative overflow-hidden"
                   style={{ background: c.bg, color: c.fg }}
                 >
-                  <span className="text-[11px] font-mono uppercase tracking-wider opacity-80">
+                  <span className="pr-10 text-[11px] font-mono uppercase tracking-wider opacity-80">
                     {r.nivel} · {r.nomeSotaque}
                   </span>
                   <span className="mt-auto font-display text-[17px] font-extrabold leading-[1.05]" lang="en">
